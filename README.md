@@ -1,40 +1,41 @@
-# 微软认知服务-自定义语音服务 (Custom Speech)：用自定义语音服务 (Custom Speech)打造您自己语音识别模型 
+#  Build your Custom Speech Model by Microsoft Azure Cognitive Service - Custom Speech Service
 
-## 背景
+## Background
 
-在微软认知服务的Speech服务里，除了提供了传统的Speech to Text 和 Text To Speech，还提供了一个定制化的语音服务(<a href="https://cris.ai/Home/CustomSpeechCustom" target="_blank"> Custom Speech Service</a>)， 通过这个Custom Speech，您就可以根据您训练数据和场景，实现一个您自己的定制化STT 模型。 这样这个Customized Speech Module 可以更好地识别特殊的强调(tone), 说话环境，词语，特殊的发音。Custom Speech 是一个非常有用的服务。下面我们就一起看看如何使用Custom Speech 来建立自己的语音识别模型
+Microsoft Cognitive Services provide a new speech - <a href="https://cris.ai/Home/CustomSpeechCustom" target="_blank"> Custom Speech Service</a>, besides general Speech to Text (STT) and Text to Speech (TTS). With Custom Speech Service, you can build your own customized STT model based on your training data and scenarios. This Custom Speech Model can better recognize specific tones, speaking environments, vocabularies, and special pronunciations. Custom Speech is a very useful service. Let's take a look at how to use Custom Speech to build your own speech recognition model.
 
-## 先决条件
+## Prerequisites
 
-* 在这个例子，我们会用Visual stuido 2017 开发一个示例应用来调用和测试训练后的的Custom Speech Module。如果您没有VS2017， 请安装
-* 请先体验一下Speech Service 的Demo <a href="https://azure.microsoft.com/zh-cn/services/cognitive-services/directory/speech/" target="_blank">点击这里</a>
-* 团队至少有1个Speech Service账户。创建<a href="https://azure.microsoft.com/zh-cn/try/cognitive-services/my-apis/?api=speech-services" target="_blank">链接</a>。
-* 选择一个调用REST API 和进行展示Client，可以是Web 页面，Mobile App，微信测试号，公众号或者Web App
-* 为定制化语音服务（Custom Speech Service） 准备训练数据Dataset，比如Acoustic （Audio File），Language，Pronuciation。关于Custom Speech 训练用Dataset 可以参考<a href="https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/how-to-customize-speech-models" target="_blank">点击这里</a>
+* In this example, we will use Visual Studio 2017 to develop a sample application to call and test the Custom Speech Module. If you don't have VS2017, please install firstly.
+* If you haven't created Speech Service, please create the service with this <a href="https://azure.microsoft.com/en-us/try/cognitive-services/" target="_blank">link</a>.
+* Please prepare for a application that use the Custom Speech REST API to test and show the result, the application can be Mobile App, Web App, WeChat App or IoT App etc.
+* Prepare training data datasets for Custom Speech Service, such as Acoustic (Audio File), Language, Pronunciation. About Custom Speech training dataset, please refer to <a href="https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/how-to-customize-speech-models" target="_blank">link</a>
 
-## 开始训练模型
-首先，我们需要了解Custom Speech支持那些数据类型和根据场景，我们要准备那些数据。目前Custom Speech 支持三类的数据集类型
+## Training the model
+Firstly, we need tp get to know the types of data and scenarios that Custom Speech Service can support. Currently, Custom Speech Service supports 3 types of dataset.
 
-* Acoustic Datasets 声学模型  
-比如，您想在嘈杂环境中更好地识别语音，则音频文件应由在嘈杂的环境中包括讲话人的声音。还有根据说话人的声调（tone）和词汇更好的识别，这样在训练的声音文件里需要包含说话对特殊语句和词汇的发音。
-要为特定领域定制声学模型，需要收集语音数据。 该集合包括一组语音数据的音频文件，以及每个音频文件的转录的文本文件text file for transcriptions。 音频数据应该代表您想要识别的场景。
-**请认真阅读Audio File 的要求 <a href="https://docs.microsoft.com/zh-cn/azure/cognitive-services/Speech-Service/how-to-customize-acoustic-models#audio-data-recommendations" target="_blank">声音文件要求</a>**
-建立对应声音文件的脚本文件 Transcriptions for Audio dataset 请参考介绍： <a href="https://docs.microsoft.com/zh-cn/azure/cognitive-services/Speech-Service/how-to-customize-acoustic-models#transcriptions-for-the-audio-dataset" target="_blank">建立脚本文件</a>  
+* Acoustic Datasets  
+An acoustic dataset for customizing the acoustic model consists of two parts: (1) a set of audio files containing the speech data and (2) a file containing the transcriptions of all audio files.
 
-  这里我们先按照需求audio file 需求录制audio file。 这里大家一定注意 **格式要求**。重要的事情说三遍。 然后将wave file 存在Train Acoustic Data 目录里，然后zip 压缩目录生成Train Acoustic Data.zip. 可以将额外录制的Audio File 作为Test Acoustic Data. 之后针对每一个训练和测试的wave file，创建transcription 文件，声音文件里对应的脚本，请注意声音文件要少于60 secs，同时，在每个声音文件主要录制特别的场景和特定的词汇和强调。请不要在一个wave 文件里录制超过一句话。下面是一个例子
+For example, if you want to have better speech recognition in noisy environments, the audio file for training should include the speaker's voice in a noisy environment. If you also want to get better recognition with the speaker's accent and specific vocabularies, in the trained sound file, it is also necessary to include the pronunciation of special sentences and vocabularies. This collection can range from a couple of utterances to several hundred hours of speech. The collection consists of a set of audio files of speech data, and a text file of transcriptions of each audio file. The audio data should be representative of the scenario in which you want to use the recognizer.
 
-    speech01.wav  speech recognition is awesome   
-    speech02.wav  the quick brown fox jumped all over the place      
+**Please read the requirement of Audio data <a href="https://docs.microsoft.com/en-us/azure/cognitive-services/Speech-Service/how-to-customize-acoustic-models#audio-data-recommendations" target="_blank">Audio data recommendations</a>**
+Build Transcriptions for Audio dataset， please refer to： <a href="https://docs.microsoft.com/en-us/azure/cognitive-services/Speech-Service/how-to-customize-acoustic-models#transcriptions-for-the-audio-dataset" target="_blank">Transcriptions for Audio dataset</a>  
+
+  Firstly, we need to record the Audio file according to **Audio file requirement**, saving the wave file in the "Train Acoustic Data" directory, and then the zip the directory to Train Acoustic Data.zip. Please prepare for additional audio files as Test Acoustic Data. After that, create a transcription file for each training and test wave file, each line of the transcription file should contain the name of one of the audio files, followed by the corresponding transcription. Please note that the audio is less than 60 secs in each audio file. Please do not record more than one sentence in a wave file. Please refer to following example
+
+    speech01.wav  speech recognition is awesome
+    speech02.wav  the quick brown fox jumped all over the place
     speech03.wav  the lazy dog was not amused
 
-  我们在本地电脑上可以准备这样文件  
-  ![数据文件](images/cris_acoustic_data.jpg)
+  Please prepare for the files like:  
+  ![data files](images/cris_acoustic_data.jpg)
 
 * Language Datasets
-给出一些文字格式的例子，让模型更好地识别和转换文字。比如，英文的大小写，连字符，特定的格式。例如，用户说：fourteen northeast third drive，我们希望识别：14 NE 3rd Dr. 请将language 训练数据放入Language Data.txt 关于数据格式请参考<a href="https://docs.microsoft.com/zh-cn/azure/cognitive-services/Speech-Service/how-to-customize-language-model#prepare-the-data" target="_blank">prepare the language data</a>
+Giving some examples of text formatting to make the model better recognize and convert text from Speech. For example, Capital Letter, hyphens, specific formats. For example: the user says "fourteen northeast third drive"，the expected recogniztion result is "14 NE 3rd Dr". Please put the language training data into Language Data.txt. Please refer to the data format: <a href="https://docs.microsoft.com/en-us/azure/cognitive-services/Speech-Service/how-to-customize-language-model#prepare-the-data" target="_blank">prepare the language data</a>
 
 * Pronunciation Datasets  
-提供一些特殊文字，词汇的发音。在数据集里，需要制定如何发音。比如，McTwo 定义为：Mike Two. **请注意在Pronunciation.txt里特殊词汇和发音之间要用一个"Tab" 分隔开**
+Provide some special text, pronunciation of the vocabulary. In the dataset, you need to define how to pronounce. For example: "McTwo" is marked to "mike two" **Please note: in Pronunciation.txt Display form and Spoken form should be separated by a <Tab>**
 
   McTWO mike two  
   McTWO mike tool  
@@ -42,58 +43,58 @@
   Hello McTWO hello mike two
 
 
-关于数据类型可以参考 - <a href="https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/how-to-customize-speech-models" target="_blank">如何创建自定义语音模型</a> 和 <a href="https://docs.microsoft.com/zh-cn/azure/cognitive-services/Speech-Service/how-to-customize-language-model" target="_blank">如何创建自定义语言模型</a>了解更多
+About data type, please refer to <a href="https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/how-to-customize-speech-models" target="_blank">Create a custom acoustic model</a>, <a href="https://docs.microsoft.com/en-us/azure/cognitive-services/Speech-Service/how-to-customize-language-model" target="_blank">Create a custom language model</a> and <a href="https://docs.microsoft.com/en-us/azure/cognitive-services/Speech-Service/how-to-customize-pronunciation" target="_blank">Enable custom pronunciation</a>
 
-### 上传Dataset：
+### Upload Dataset：
 
-进入<a href="https://cris.ai" target="_blank"> Custom Speech Service Portal</a> 选择"Adaptation Data" 
+In <a href="https://cris.ai" target="_blank"> Custom Speech Service Portal</a> select "Adaptation Data" 
 ![crisPortal](images/crisPortal.jpg)
 
-将准备好的Acoustic data，Language 和 Pronunciation data 上传（Import）到相应的Dataset 里
+Upload your Acoustic data，Language and Pronunciation data, to corresponding Dataset
 ![crisPortal](images/crisPortalDataset.jpg)
 
-在Import Acoustic Data 里将Transcriptions 和 Audio file 上传，然后，把Language 和 Pronunciation Data 上传。 **如果，您的场景中没有Acoustic 定制化寻求可以不用上传数据，可以根据您的场景选择相应的训练和测试数据**
+Upload Transcriptions and Audio file in "Import Acoustic Data", then upload the Language and Pronunciation Data. **If there isn't the requirement of acoustic recogniztion in your scenarios, you don't need to upload acoustic data. You can select the corresponding training and test data according to your scenario.**
 
-### 创建模型(Models)：
-您可以选择创建Acoustic Model 或者Language Model。从Custom Speech的下拉菜单里选择Acoustic Models，在页面里选择"Create New"，在这里您可以选择自己的训练Acoustic Data。在Accuracy Testing 选项里，如果您有训练好的Language Model和Test Acoustic Data，您可以勾选上，进行测试。 如果没有请忽略。
+### Create Models：
+You can choose to create an Acoustic Model or a Language Model. Select Acoustic Models from the Custom Speech drop-down menu and select "Create New" on the page, where you can choose your own training Acoustic Data. In the Accuracy Testing option, if you have a trained Language Model and Test Acoustic Data, you can select it and test it. If not, please ignore it.
 ![crisAcousticModel](images/crisAcousticModel.jpg)
 
-创建Language Model，从Custom Speech的下拉菜单里选择Language Models，在页面里选择"Create New"，在这里您可以选择自己的训练Language Data 和 Pronunciation Data。在Accuracy Testing 选项里，如果您有训练好的Acoustic Model和Test Acoustic Data，您可以勾选上，进行测试。 如果没有请忽略。
+To create the Language Model, select Language Models from the Custom Speech drop-down menu and select "Create New" on the page, where you can choose your own training Language Data and Pronunciation Data. In the Accuracy Testing option, if you have a trained Acoustic Model and Test Acoustic Data, you can select it and test it. If not, please ignore it.
 ![crisLanguageModel](images/crisLanguageModel.jpg)
 
-如果训练Status 是Failed， 请检查训练数据类型是否符合要求，比如，Audio File 是否wave mono，bitrate 等。您可以从"Accuracy Test Results"创建新的Accuracy Test，同时，也可以查询之前的测试结果。
+If the training result is failed, please check if the training data formats meet the requirements. For example: check if Audio File is wave mono，check bitrate value. You can create a new Accuracy Test from "Accuracy Test Results" and also check previous test results.
 
-### 部署模型生成 Endpoint：
-当模型训练好后，就可以生成自己的Custom Speech Endpoints。从Custom Speech的下拉菜单里选择"Endpoints"，在页面里选择"Create New" 您可以将训练好的Acoustic Model 和 Language Model 都选上，也可以选择特定Acoustic 或者 Language Model。 这里"Universal" 代表通用（标准）Speech Model。
+### Deployment model and generate Endpoint：
+After models are ready, you can create your own Custom Speech Endpoints. Select "Endpoints" from the Custom Speech drop-down menu and select "Create New" from the page. You can select both the trained Acoustic Model and the Language Model, or you can select a specific Acoustic or Language Model.
  ![endpoint](images/endpoint.jpg) 
 
- 部署完成以后，可以通过"Detail" 选项查看具体Endpoint ID，Subscription Key，REST API，WSS link 等。 通过API，您就可以直接调用您自己Custom Speech 模型。
+ After the deployment is completed, you can find the specific Endpoint ID, Subscription Key, REST API, WSS link, etc. through the "Detail" option. With the Rest API, you can consume your own Custom Speech model directly
  ![endpoint2](images/endpoint2.jpg) 
 
- 在Endpoint 页面里，您也可以直接上传一个wave 文件快速验证您的模型状态
+ In the Endpoint page, you can also directly upload a wave file to quickly test with your model.
  ![endpoint3](images/endpoint3.jpg) 
 
-### 在App里使用Custom Speech Model：
-您的自定义语音模型训练好后，就可以集成在自己的应用里了。 您可以通过REST API， Websocket API 进行访问。 其实，Custom Speech Moduel API 比通用的Speech Service 就多了一个 Deployment ID (a.k.a Endpoint ID)，所以，您可以使用之前的Speech SDK，但是进行稍微的改动就行。 
+### Use Custom Speech Model in application：
+Once your custom speech model is ready, you can use it in your applications. You can access it through the REST API and the Websocket API. In face, comparing with general Speech Service API, there is one more parameter - Deployment ID (a.k.a Endpoint ID) Custom Speech model API, so you can use the Speech SDK with small changes.
 
-这里我们用一个Windows App 的例子进行Custom Speech Model 在应用中的集成。 首先，我们将标准Speech 服务里的subscription key 输入到function - RecognitionWithMicrophoneAsync
+In this example, let's use Custom Speech Model API in a Windows App. Firstly, put the subscription key of Speech Service to function - RecognitionWithMicrophoneAsync
 
     var factory = SpeechFactory.FromSubscription("YourSubscriptionKey", "YourServiceRegion");
 
-然后，配置Custom Speech Moduel.在Function - RecognitionUsingCustomizedModelAsync 除了配置subscriptionKey 以外，还要配置DeploymentID，就是Endpoint ID
+Secondly，we need to configure the parameter of Custom Speech Model. In Function - RecognitionUsingCustomizedModelAsync besides setting subscriptionKey，we set DeploymentID (a.k.a Endpoint ID）
 
     // Replace with the CRIS deployment id of your customized model.
     recognizer.DeploymentId = "YourDeploymentId";
 
-编译和运行后，输入1 是标准的Speech service， 输入4 是用Custom Speech Endpoint。下面是对于一个词Mctwo 不同的识别结果
+After compiling, run the app, Option 1 for general Speech Service, Option 4 for using Custom Speech Endpoint. The following is a different recognition result for same word "Mctwo"
 ![test](images/test.jpg) 
 
-这个Windows App 实例代码可以在目录crisWinAppDemo里找到，也可以访问<a href="https://github.com/Azure-Samples/cognitive-services-speech-sdk/tree/master/Windows/csharp_samples" target="_blank">link</a>
+This Windows App sample code can be found in the folder "crisWinAppDemo" and please also refer to <a href="https://github.com/Azure-Samples/cognitive-services-speech-sdk/tree/master/Windows/csharp_samples" target="_blank">link</a>
 
-## 参考
+## References
 
-**自定义语音识别服务 (Custom Speech Service)**
+**Custom Speech Service**
 
-* 自定义语音识别服务 (Custom Speech Service) <a href="https://cris.ai/" target="_blank">Portal</a>
-* 自定义语音识别服务 (Custom Speech Service)文档 <a href="https://docs.microsoft.com/zh-cn/azure/cognitive-services/speech-service/how-to-customize-speech-models" target="_blank">链接</a>
-* 自定义语音识别服务(Custom Speech Service) Windows App 例子 <a href="https://github.com/Azure-Samples/cognitive-services-speech-sdk/tree/master/Windows/csharp_samples" target="_blank">链接</a>
+* Custom Speech Service <a href="https://cris.ai/" target="_blank">Portal</a>
+* Custom Speech Service Document <a href="https://docs.microsoft.com/zh-cn/azure/cognitive-services/speech-service/how-to-customize-speech-models" target="_blank">Link</a>
+* Custom Speech Service Windows App <a href="https://github.com/Azure-Samples/cognitive-services-speech-sdk/tree/master/samples/csharp/dotnetcore/console" target="_blank">Link</a>
